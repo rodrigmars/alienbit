@@ -13,7 +13,7 @@ def fifo_deque():
 
         while counter < num_capacitors:
 
-            if len(fifo_message) >= 1:
+            if fifo_message:
 
                 data = fifo_message.popleft()
 
@@ -28,7 +28,7 @@ def fifo_deque():
 
         while counter < num_capacitors:
 
-            if len(fifo_score) >= 1:
+            if fifo_score:                
 
                 data = fifo_score.popleft()
 
