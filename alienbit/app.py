@@ -8,12 +8,10 @@ if __name__ == "__main__":
 
         main()
 
-        print("Capacitores processados com sucesso")
-
-        exit(0)
-
     except Exception as e:
-        
         print(e)
-        
-        exit(1)
+        exit(1)    
+    else:
+        print("Capacitores processados com sucesso")
+    finally:
+        exit(0)
