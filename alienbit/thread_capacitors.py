@@ -1,6 +1,7 @@
 import time
 from threading import Thread, current_thread
 from collections import deque
+from random import randrange
 from fifo import fifo_deque
 from core import hard_verse
 
@@ -22,23 +23,21 @@ def thread_capacitor() -> None:
 
         fifo_message.appendleft((current_thread().name, 'Exiting'))
 
-    capacitors:list = [[ producer_flux, 2, "flux_01"], 
-                       [ producer_flux, 2, "flux_02"], 
-                       [ producer_flux, 1, "flux_03"]]
+    TOTAL_CAPACITORS:int = 2
 
     thread_message = Thread(target=consumer_message, 
-                            args=(fifo_message, len(capacitors)), 
+                            args=(fifo_message, TOTAL_CAPACITORS), 
                             name="thread_monitor")
     thread_message.start()
     
     Thread(target=consumer_score, 
-           args=(fifo_message, fifo_score, len(capacitors)), 
+           args=(fifo_message, fifo_score, TOTAL_CAPACITORS), 
            name="thread_monitor").start()
-        
-    for flux in capacitors:
 
-        Thread(target=flux[0], 
-               args=(fifo_message, fifo_score, flux[1]), 
-               name=flux[2]).start()
+    for i in range(TOTAL_CAPACITORS):
+
+        Thread(target=producer_flux, 
+               args=(fifo_message, fifo_score, randrange(1, 9)), 
+               name=f"flux_{i}").start()
 
     thread_message.join()
