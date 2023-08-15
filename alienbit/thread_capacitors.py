@@ -1,21 +1,21 @@
 import time
 from threading import Thread, current_thread
 from collections import deque
-from random import randrange
+from random import randrange, choice
 from fifo import fifo_deque
-from core import hard_verse
+from core import get_estrategy, hard_verse
 
 def thread_capacitor() -> None:
 
     fifo_message, fifo_score, consumer_message, consumer_score = fifo_deque()
 
-    def producer_flux(fifo_message:deque, fifo_score:deque, total_time:int):
+    def producer_flux(fifo_message:deque, fifo_score:deque, total_time:int, strategy:dict):
 
         fifo_message.appendleft((current_thread().name, 'Starting'))
 
         time.sleep(total_time)
 
-        score = hard_verse("sadsa")(25)([.1, 25])(2.5)
+        score = hard_verse(strategy["economy"])(strategy["coin"])(strategy["economy_"])(strategy["percent"])
 
         fifo_score.appendleft((current_thread().name, f'score:{score}'))
 
@@ -37,7 +37,7 @@ def thread_capacitor() -> None:
     for i in range(TOTAL_CAPACITORS):
 
         Thread(target=producer_flux, 
-               args=(fifo_message, fifo_score, randrange(1, 9)), 
+               args=(fifo_message, fifo_score, randrange(1, 9), get_estrategy()), 
                name=f"flux_{i}").start()
 
     thread_message.join()
