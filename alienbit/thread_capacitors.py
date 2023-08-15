@@ -7,7 +7,7 @@ from core import get_estrategy, hard_verse
 
 def thread_capacitor() -> None:
 
-    fifo_message, fifo_score, consumer_message, consumer_score = fifo_deque()
+    fifo_status_percent, fifo_message, fifo_score, consumer_spinner, consumer_message, consumer_score = fifo_deque()
 
     def producer_flux(fifo_message:deque, fifo_score:deque, total_time:int, strategy:dict):
 
@@ -23,11 +23,17 @@ def thread_capacitor() -> None:
 
         fifo_message.appendleft((current_thread().name, 'Exiting'))
 
-    TOTAL_CAPACITORS:int = 1500
+    TOTAL_CAPACITORS:int = 10
+
+    thread_spinner = Thread(target=consumer_spinner, 
+                            args=(fifo_status_percent,), 
+                            name="thread_spinner")
+
+    thread_spinner.start()
 
     thread_message = Thread(target=consumer_message, 
-                            args=(fifo_message, TOTAL_CAPACITORS), 
-                            name="thread_monitor")
+                            args=(fifo_status_percent, fifo_message, TOTAL_CAPACITORS), 
+                            name="thread_message")
     thread_message.start()
     
     Thread(target=consumer_score, 
@@ -42,4 +48,5 @@ def thread_capacitor() -> None:
         
         time.sleep(.1)
 
-    thread_message.join()
+    # thread_message.join()
+    thread_spinner.join()

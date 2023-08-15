@@ -12,6 +12,6 @@ if __name__ == "__main__":
         print(e)
         exit(1)    
     else:
-        print("Capacitores processados com sucesso")
+        print("\nCapacitores processados com sucesso")
     finally:
         exit(0)
