@@ -23,7 +23,7 @@ def thread_capacitor() -> None:
 
         fifo_message.appendleft((current_thread().name, 'Exiting'))
 
-    TOTAL_CAPACITORS:int = 2
+    TOTAL_CAPACITORS:int = 1500
 
     thread_message = Thread(target=consumer_message, 
                             args=(fifo_message, TOTAL_CAPACITORS), 
@@ -39,5 +39,7 @@ def thread_capacitor() -> None:
         Thread(target=producer_flux, 
                args=(fifo_message, fifo_score, randrange(1, 9), get_estrategy()), 
                name=f"flux_{i}").start()
+        
+        time.sleep(.1)
 
     thread_message.join()
