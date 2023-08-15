@@ -1,3 +1,5 @@
+from collections import deque
+
 def hard_verse(track:str):
 
     def x_play(x):
@@ -8,11 +10,11 @@ def hard_verse(track:str):
         return y_stop
     return x_play
 
-def producer_flux(fifo_message, fifo_score, wait:int):
+def producer_flux(fifo_message:deque, fifo_score:deque, total_time:int):
 
     fifo_message.appendleft((current_thread().name, 'Starting'))
 
-    time.sleep(wait)
+    time.sleep(total_time)
 
     score = hard_verse("sadsa")(25)([.1, 25])(2.5)
 
@@ -22,7 +24,7 @@ def producer_flux(fifo_message, fifo_score, wait:int):
 
     fifo_message.appendleft((current_thread().name, 'Exiting'))
 
-def consumer_message(fifo_message, num_capacitors:int) -> None:
+def consumer_message(fifo_message:deque, num_capacitors:int) -> None:
     
     counter:int = 0
 
@@ -54,14 +56,16 @@ def consumer_score(fifo_message, fifo_score, num_capacitors:int) -> None:
 if __name__ == "__main__":
 
     import time
-    from collections import deque
+    
     from threading import Thread, current_thread
 
     fifo_message = deque()
 
     fifo_score = deque()
 
-    capacitors:list = [[ producer_flux, 2, "flux_01"], [ producer_flux, 2, "flux_02"], [ producer_flux, 1, "flux_03"]]
+    capacitors:list = [[ producer_flux, 2, "flux_01"], 
+                       [ producer_flux, 2, "flux_02"], 
+                       [ producer_flux, 1, "flux_03"]]
 
     thread_message = Thread(target=consumer_message, args=(fifo_message, len(capacitors)), name="thread_monitor")
     thread_message.start()
