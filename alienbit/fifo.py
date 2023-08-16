@@ -1,4 +1,3 @@
-import time
 from threading import Event
 from itertools import cycle
 from collections import deque

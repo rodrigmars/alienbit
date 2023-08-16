@@ -19,7 +19,7 @@ def thread_capacitor() -> None:
 
     def producer_flux(fifo_message:deque, fifo_score:deque, fifo_counter_processed:deque, total_time:int, strategy:dict):
 
-        status_error = False
+        status:str=""
 
         try:
 
@@ -33,15 +33,16 @@ def thread_capacitor() -> None:
 
             fifo_score.appendleft((current_thread().name, f'score:{score}'))
 
+            status = "Processed"
+
             time.sleep(.1)
 
         except Exception as e:
             fifo_error.appendleft((current_thread().name, 'Error', e))
-            status_error = True
+            status = "Processed with Error"
         finally:
-            fifo_message.appendleft((current_thread().name, 'Processed' if status_error is False else 'Processed with Error'))
+            fifo_message.appendleft((current_thread().name, status))
             fifo_counter_processed.appendleft(1)
-            print("finally chegando aqui ")
 
     TOTAL_CAPACITORS:int = 10
 
