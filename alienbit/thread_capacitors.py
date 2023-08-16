@@ -17,17 +17,15 @@ def thread_capacitor() -> None:
                                 consumer_error = fifo_deque()
 
 
-    def producer_flux(fifo_message:deque, fifo_score:deque, fifo_signals_process:deque, total_time:int, strategy:dict):
+    def producer_flux(event:Event, fifo_message:deque, fifo_score:deque, fifo_signals_process:deque, total_time:int, strategy:dict):
 
         status:str=""
 
         try:
 
-            raise Exception("Error teste")
-
             fifo_message.appendleft((current_thread().name, 'Starting'))
 
-            time.sleep(total_time)
+            event.wait(total_time)
 
             score = hard_verse(strategy["economy"])(strategy["coin"])(strategy["economy_"])(strategy["percent"])
 
@@ -35,7 +33,7 @@ def thread_capacitor() -> None:
 
             status = "Processed"
 
-            time.sleep(.1)
+            event.wait(.1)
 
         except Exception as e:
             fifo_error.appendleft((current_thread().name, 'Error', e))
@@ -69,7 +67,7 @@ def thread_capacitor() -> None:
     for i in range(TOTAL_CAPACITORS):
 
         Thread(target=producer_flux, 
-               args=(fifo_message, fifo_score, fifo_signals_process, randrange(1, 9), get_estrategy()), 
+               args=(event, fifo_message, fifo_score, fifo_signals_process, randrange(1, 9), get_estrategy()), 
                name=f"flux_{i}").start()
         
         time.sleep(.1)

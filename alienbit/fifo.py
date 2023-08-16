@@ -52,8 +52,6 @@ def fifo_deque():
 
                 fifo_message.appendleft((data[0], f"Score armazenado:{data[1]}"))
 
-                data.release()
-
             if event.wait(.1):
                 break
 
