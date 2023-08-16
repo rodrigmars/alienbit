@@ -1,5 +1,7 @@
-from collections import deque
 import time
+from itertools import cycle
+from collections import deque
+from infra.log_system.logging_exception import  inject_error
 
 def fifo_deque():
 
@@ -9,6 +11,16 @@ def fifo_deque():
 
     fifo_score = deque()
 
+    fifo_error = deque()
+
+    def consumer_error(fifo_error:deque) -> None:
+
+        while True:
+
+            if fifo_error:
+                
+                inject_error(fifo_error.popleft())
+
     def consumer_message(fifo_status_percent:deque, fifo_message:deque, total_capacitors:int) -> None:
         
         counter:int = 0
@@ -17,17 +29,16 @@ def fifo_deque():
 
             if fifo_message:
 
-                data = fifo_message.popleft()
+                data:tuple = fifo_message.popleft()
 
-                # print("Message:", data)
-
-                if "Exiting" == data[1]:
+                if "EXITING" == data[1].upper():
                     counter += 1
                     fifo_status_percent.appendleft(int((counter / total_capacitors) * 100))
             
             time.sleep(0.1)
 
-    def consumer_score(fifo_message, fifo_score, total_capacitors:int) -> None:
+
+    def consumer_score(fifo_message, fifo_score:deque, total_capacitors:int) -> None:
 
         counter:int = 0 
 
@@ -44,22 +55,33 @@ def fifo_deque():
 
                 counter +=1 
 
+                data.release()
+
             time.sleep(0.1)
                 
-    def consumer_spinner(fifo_status_percent:deque) -> None:
+    def consumer_spinner(fifo_counter_processed:deque, total_capacitors:int) -> None:
         
-        perc:int = 0
+        counter_processed:int = 0
+        perc: int = 0
         hide_curor:str = '\033[?25l'
-        while True:
+        
+        for char in cycle('|/-\\'):
 
-            if fifo_status_percent:
-                perc = fifo_status_percent.popleft()
+            if fifo_counter_processed:
+                counter_processed += fifo_counter_processed.popleft()
+                perc = int((counter_processed / total_capacitors) * 100)
 
-            for char in '|/-\\':
-                print(end=f"{hide_curor}{'processed' if 100 == perc else 'processing'}...{char} {perc}%\r")
-                time.sleep(.08)
+            print(end=f"{hide_curor}{'processed' if perc == 100 else 'processing'}...{char} {perc}%\r")
+            time.sleep(.08)
             
-            if 100 == perc:
+            if counter_processed >= total_capacitors:
                 break
 
-    return fifo_status_percent, fifo_message, fifo_score, consumer_spinner, consumer_message, consumer_score
+    return fifo_status_percent, \
+        fifo_message, \
+            fifo_score, \
+                fifo_error, \
+                    consumer_spinner, \
+                        consumer_message, \
+                            consumer_score, \
+                                consumer_error
