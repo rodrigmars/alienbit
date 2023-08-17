@@ -10,22 +10,30 @@ def flux_consumer(event:Event,
        
     try:
 
-        with connection_db(path_db)() as conn:
-            
-            cursor = conn.cursor()
-
             while True:
 
                 if flux_message:
-                    
-                    message = flux_message.popleft()
-                    
-                    cursor.execute("INSERT INTO TEMP_ERRORS VALUES (num_errors)")
-                    # cursor.execute("INSERT INTO ERRORS VALUES ()")
 
-                    conn.commit()        
+                    message = flux_message.popleft()
+
+                    print("message>>>>>>", message)
+
+
+                    # with connection_db(path_db)() as conn:
+                        
+                    #     cursor = conn.cursor()
+                                
+                    #     message = flux_message.popleft()
+                        
+                    #     print("message>>>>>>", message)
+
+                    #     cursor.execute("INSERT INTO TEMP_ERRORS VALUES (num_errors)")
+                    #     # cursor.execute("INSERT INTO ERRORS VALUES ()")
+
+                    #     conn.commit()        
 
                 if event.wait(.1):
                     break
+
     except Exception as e:
-        ...
+        print("flux_consumer.flux_consumer:Error", e)

@@ -18,7 +18,7 @@ def thread_capacitor() -> None:
 
     flux_message = deque()
 
-    TOTAL_CAPACITORS:int = 2
+    TOTAL_CAPACITORS:int = 500
 
     thread_progress = Thread(target=progress_consumer, 
                             args=(event, signals_process, TOTAL_CAPACITORS), 
@@ -33,7 +33,7 @@ def thread_capacitor() -> None:
     for i in range(TOTAL_CAPACITORS):
 
         Thread(target=producer_flux, 
-               args=(event, flux_message, signals_process, randrange(1, 9), hard_verse, get_estrategy()), 
+               args=(event, flux_message, signals_process, randrange(1, 9)), 
                name=f"flux_{i}").start()
         
         sleep(.1)
