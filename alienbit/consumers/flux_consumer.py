@@ -16,7 +16,7 @@ def flux_consumer(event:Event,
 
                     message = flux_message.popleft()
 
-                    print("message>>>>>>", message)
+                    print("message received:>", message)
 
 
                     # with connection_db(path_db)() as conn:
