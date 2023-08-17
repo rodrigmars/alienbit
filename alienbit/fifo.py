@@ -15,14 +15,36 @@ def fifo_deque():
 
     def consumer_error(event:Event, fifo_error:deque) -> None:
 
-        while True:
+        conn: sqlite3.Connection | None = None
 
-            if fifo_error:
-                
-                inject_error(fifo_error.popleft())
+        try:
 
-            if event.wait(.1):
-                break
+            conn = sqlite3.connect(':memory:') 
+
+            cursor = conn.cursor()
+
+            num_errors:int = 0
+
+            while True:
+
+                if fifo_error:
+                    num_errors += 1 
+                    # inject_error(fifo_error.popleft())
+                    cursor.execute("INSERT INTO TEMP_ERRORS VALUES (num_errors)")
+                    # cursor.execute("INSERT INTO ERRORS VALUES ()")
+
+                    conn.commit()        
+
+                if event.wait(.1):
+                    break
+
+        except Exception as e:
+            ...
+
+        finally:
+
+            if conn:
+                conn.close()
 
     def consumer_message(event:Event, fifo_message:deque) -> None:
 

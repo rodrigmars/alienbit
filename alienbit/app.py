@@ -1,17 +1,27 @@
+from time import perf_counter
+from pathlib import Path
+from traceback import format_exc
 from thread_capacitors import thread_capacitor
-
-def main() -> None:thread_capacitor()
+from infra.log_system.logging_exception import  inject_error
 
 if __name__ == "__main__":
 
-    try:
+    exit_code:int = 0
 
-        main()
+    try:
+        start:float= perf_counter()
+
+        @lambda _: _()
+        def main() -> None: thread_capacitor()
 
     except Exception as e:
-        print(e)
-        exit(1)    
+        inject_error(("module:app", format_exc()))
+
     else:
-        print("\nCapacitores processados com sucesso")
+        
+        elapsed:float = perf_counter() - start
+        print(flush=True, end=f">> Capacitores processados com sucesso - tempo total:{elapsed:.2f}s")
+
     finally:
-        exit(0)
+
+        exit(exit_code)
