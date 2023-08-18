@@ -11,7 +11,7 @@ Para manter a integridade dos dados, o Deque (Doubly Ended Queue) é utilizado c
 
 ### Gerando ambiente
 ```powershell
-PS C:\alienbit> python -m venv bvenv_alienbit
+PS C:\alienbit> python -m venv venv_alienbit
 ```
 ### Ativando ambiente
 ```powershell
