@@ -17,7 +17,7 @@ def thread_capacitor() -> None:
 
     flux_message = deque()
 
-    TOTAL_CAPACITORS:int = 5000
+    TOTAL_CAPACITORS:int = 10
 
     thread_progress = Thread(target=progress_consumer, 
                             args=(event, signals_process, TOTAL_CAPACITORS), 

@@ -10,13 +10,9 @@ def flux_producer(event:Event,
 
     status:str="Starting"
     
-    messages = []
-
     try:
 
         flux_message.appendleft({"LOG_INFO": (current_thread().name, status)})
-
-        # event.wait(total_time)
 
         spaceship, rock, warp_jump, economy = expedition_config()
 
@@ -35,13 +31,9 @@ def flux_producer(event:Event,
         status = "Processed with Error"
     
     finally:
-        
-        # flux_message.appendleft(messages)
-        
+                
         flux_message.appendleft({"LOG_INFO": (current_thread().name, status)})
         
         signals_process.appendleft(1)
-        
-        messages.clear()
 
         

@@ -65,8 +65,8 @@ def launch_expedition(event:Event, flux_message: deque, spaceship:dict) -> Calla
                 flux_message.appendleft({"LOG_INFO": ("expedition_core.launch_expedition", f"Expedição {spaceship['name']} finalizada | Economia:{economy[0]} | {trade} | {rock[0]} - venda:{sold}")})
 
                 return {
-                    'Rank': spaceship[0],
-                    'Spaceship': spaceship[1],
+                    'Rank': spaceship['rank'],
+                    'Spaceship': spaceship['name'],
                     'Propellant': spaceship["propellant"],
                     'Rock':rock[0],
                     'Unit_Value':rock[1],
