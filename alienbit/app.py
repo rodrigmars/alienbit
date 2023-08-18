@@ -11,13 +11,8 @@ if __name__ == "__main__":
     try:
         start:float= perf_counter()
 
-        # @lambda _: _()
-        # def main() -> None: thread_capacitor()
-
-        spaceship, rock, warp_jump, economy = expedition_config()
-
-        score = launch_expedition(spaceship)(rock)(warp_jump)(economy)
-        print("score:>", score)
+        @lambda _: _()
+        def main() -> None: thread_capacitor()
 
     except Exception as e:
         inject_error(("module:app", format_exc()))

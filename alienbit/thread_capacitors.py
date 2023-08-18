@@ -1,9 +1,9 @@
 from time import sleep
-from random import randrange
 from threading import Event, Thread
 from collections import deque
 
 from core.flux_core import flux_producer
+from core.expedition_core import expedition_config, launch_expedition
 from infra.db.sqlite_db import connection_db
 from consumers.progress_spinner import progress_consumer
 from consumers.flux_consumer import flux_consumer
@@ -32,7 +32,7 @@ def thread_capacitor() -> None:
     for i in range(TOTAL_CAPACITORS):
 
         Thread(target=flux_producer, 
-               args=(event, flux_message, signals_process, randrange(8, 15)), 
+               args=(event, flux_message, signals_process, expedition_config, launch_expedition), 
                name=f"flux_{i}").start()
         
         sleep(.1)
